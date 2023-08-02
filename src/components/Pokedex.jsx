@@ -6,18 +6,17 @@ import Paginacao from "./Paginacao"
 export default function Pokedex(){
     const limiteDeItensPorPagina = 10;
     const [pokemons, setPokemons] = useState([])
-    const [paginaAtual, setPaginaAtual] = useState(0)
+    const [pontoInicialDeConsulta, setPontoInicialDeConsulta] = useState(0)
     const [quantidadeDePokemons, setQuantidadeDePokemons] = useState(0)
 
     useEffect(()=>{
-        console.log(paginaAtual)
-        fetch("https://pokeapi.co/api/v2/pokemon?limit="+limiteDeItensPorPagina+"&offset="+paginaAtual)
+        fetch("https://pokeapi.co/api/v2/pokemon?limit="+limiteDeItensPorPagina+"&offset="+pontoInicialDeConsulta)
         .then(response => response.json())
         .then(data => {
             setPokemons(data.results)
             setQuantidadeDePokemons(data.count)
         })
-    }, [paginaAtual])
+    }, [pontoInicialDeConsulta])
 
     return <div>
         <NavBar/>
@@ -30,9 +29,9 @@ export default function Pokedex(){
             ))}
             </div>
         </div>
-        <Paginacao limiteDeItensPorPagina={limiteDeItensPorPagina} total={192} offset={0}/>
+        <Paginacao count={quantidadeDePokemons} itensPorPagina={limiteDeItensPorPagina} offset={pontoInicialDeConsulta} setOffset={setPontoInicialDeConsulta}/>
         <button onClick={()=> {            
-            setPaginaAtual(paginaAtual+10)
+            setPontoInicialDeConsulta(pontoInicialDeConsulta+10)
             }
         }>Poximos Dez</button>
     </div>
