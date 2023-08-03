@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import Load from "./Load"
 
 export default function Card({url}){
     const [pokemonId, setPokemonId] = useState(null)
@@ -7,9 +8,10 @@ export default function Card({url}){
     const [pokemonAltura, setPokemonAltura] = useState(null)
     const [pokemonPeso, setPokemonPeso] = useState(null)
     const [saibaMais, setSaibaMais] = useState(false)
-    
+    const [carregando, setCarregando] = useState(true)
 
     useEffect(()=>{
+        setCarregando(true)
         fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -18,8 +20,11 @@ export default function Card({url}){
             setPokemonSpriteFront(data.sprites.front_default)
             setPokemonPeso(data.weight)
             setPokemonAltura(data.height)
+            setCarregando(false)
         })
     }, [url])
+
+
     if(!saibaMais){
         return <div className="card box-shadow-default border-radius-card">
             <div className="card-header">
@@ -27,9 +32,11 @@ export default function Card({url}){
                 <h2 className="card-header-title">{pokemonName}</h2>
             </div>
             <div className="card-content is-flex is-justify-content-center">
-                <figure className="image is-96x96">
+                { carregando 
+                ? <Load/> 
+                : <figure className="image is-96x96">
                     <img src={pokemonSpriteFront}/>
-                </figure>
+                </figure>}
             </div>
             <div className="card-footer">
                 <button className="button card-footer-item is-info" onClick={()=>setSaibaMais(!saibaMais)}>Saiba mais</button>

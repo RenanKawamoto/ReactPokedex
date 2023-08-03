@@ -30,9 +30,5 @@ export default function Pokedex(){
             </div>
         </div>
         <Paginacao count={quantidadeDePokemons} itensPorPagina={limiteDeItensPorPagina} offset={pontoInicialDeConsulta} setOffset={setPontoInicialDeConsulta}/>
-        <button onClick={()=> {            
-            setPontoInicialDeConsulta(pontoInicialDeConsulta+10)
-            }
-        }>Poximos Dez</button>
     </div>
 }
